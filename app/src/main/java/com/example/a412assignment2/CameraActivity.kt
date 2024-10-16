@@ -19,10 +19,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.ui.platform.LocalContext
+
 
 class CameraActivity : ComponentActivity() {
     // Define the button and imageview type variable
     private lateinit var cameraOpenId: Button
+    private lateinit var backButtonId: Button
     lateinit var clickImageId: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,7 @@ class CameraActivity : ComponentActivity() {
         // By ID we can get each component which id is assigned in XML file get Buttons and imageview.
         cameraOpenId = findViewById(R.id.camera_button)
         clickImageId = findViewById(R.id.click_image)
+        backButtonId = findViewById(R.id.back_button)
 
         // Camera_open button is for open the camera and add the setOnClickListener in this button
         cameraOpenId.setOnClickListener(View.OnClickListener { v: View? ->
@@ -39,6 +43,16 @@ class CameraActivity : ComponentActivity() {
             // Start the activity with camera_intent, and request pic id
             startActivityForResult(cameraIntent, pic_id)
         })
+
+        backButtonId.setOnClickListener(View.OnClickListener { v: View? ->
+            // Create the camera_intent ACTION_IMAGE_CAPTURE it will open the camera for capture the image
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val intent = Intent(this@CameraActivity, MainActivity::class.java)
+            this@CameraActivity.startActivity(intent)
+            // Start the activity with camera_intent, and request pic id
+
+        })
+
     }
 
     // This method will help to retrieve the image

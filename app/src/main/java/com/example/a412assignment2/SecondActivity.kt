@@ -11,10 +11,25 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -29,41 +44,80 @@ class SecondActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             _412Assignment2Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Information(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                ScaffoldExample()
+
             }
         }
     }
 }
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Information(name: String, modifier: Modifier = Modifier) {
+fun ScaffoldExample() {
+    var presses by remember { mutableIntStateOf(0) }
     val context = LocalContext.current
-    Column(modifier = modifier.padding(8.dp), verticalArrangement = Arrangement.Center) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
+                    Text("Second Activity")
+                },
+                navigationIcon = {
+                    IconButton(onClick = { val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent) }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Localized description"
+                        )
+                    }
+                },
 
-        Text(
-            text = "Software Engineering Challenges:\n\n Device Fragmentation (Considering the different device configurations)\n\n OS Fragmentation (OS compatibilities)\n\n Rapid Changes to OS versions\n\n User's low Tolerance\n\n Low Security to prevent cyber attacks\n",
-            fontSize = 20.sp,
-            lineHeight = 30.sp,
-            textAlign = TextAlign.Center,
-            modifier = modifier
-        )
-        Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center)
-        {
-            Button(onClick =  {
-                val intent = Intent(context, MainActivity::class.java)
-                context.startActivity(intent)
-
-            }) {
-                Text("Main Activity")
-
+            )
+        },
+        bottomBar = {
+            BottomAppBar(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = "",
+                )
             }
-        }
+        },
+        
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Text(
+                modifier = Modifier.padding(8.dp),
+                textAlign = TextAlign.Center,
+                text =
+                """
+                    Software Engineering Challenges:
 
+                    Device Fragmentation (Considering the different device configurations)
+                    
+                    OS Fragmentation (OS compatibilities)
+                    
+                    Rapid Changes to OS versions
+                    
+                    User's low Tolerance
+                    
+                    Low Security to prevent cyber attacks
+
+                """.trimIndent(),
+            )
+        }
     }
 }
+
 
