@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //setContentView(R.layout.activity_main)
         enableEdgeToEdge()
         setContent {
             _412Assignment2Theme {
@@ -77,10 +78,14 @@ fun Greeting(name: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
                 modifier = modifier
             )
             ImplicitButtonExample()
+            CameraButton()
         }
 
     }
 }
+
+
+
 
 @Composable
 fun ImplicitButtonExample(modifier: Modifier = Modifier) {
@@ -116,3 +121,20 @@ fun ExplicitButtonExample(modifier: Modifier = Modifier) {
 }
 
 
+@Composable
+fun CameraButton(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    Column (
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick =  {
+            val intent = Intent(context, CameraActivity::class.java)
+            context.startActivity(intent)
+
+        }) {
+            Text("Camera Button")
+
+        }
+    }
+}
