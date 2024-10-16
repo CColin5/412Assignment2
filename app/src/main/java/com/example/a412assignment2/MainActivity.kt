@@ -188,7 +188,7 @@ fun CameraButton(modifier: Modifier = Modifier) {
             context.startActivity(intent)
 
         }) {
-            Text("Camera Button")
+            Text("View Image Activity")
 
         }
     }
