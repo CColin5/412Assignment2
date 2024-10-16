@@ -23,6 +23,19 @@ import androidx.compose.ui.unit.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -35,52 +48,94 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             _412Assignment2Theme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Colin Campbell",
-                        modifier = Modifier.padding(innerPadding),
-                        onClick = {
-                            // Handle the button click action here
-                        }
-                    )
-
-                }
+                ScaffoldMainActivity()
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ButtonForApp(onClick: () -> Unit){
+fun ScaffoldMainActivity() {
+    var presses by remember { mutableIntStateOf(0) }
+    val context = LocalContext.current
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                colors = topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
+                title = {
 
-}
+                    Text(
+                        textAlign = TextAlign.Center,
+                        text ="Main Activity",
+
+                    )
+                },
+//                navigationIcon = {
+//                    IconButton(onClick = { val intent = Intent(context, MainActivity::class.java)
+//                        context.startActivity(intent) }) {
+//                        Icon(
+//                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+//                            contentDescription = "Localized description"
+//                        )
+//                    }
+//                },
+
+                )
+        },
+        bottomBar = {
+            BottomAppBar(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = "",
+                )
+            }
+        },
+
+        ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Column(verticalArrangement = Arrangement.Center) {
+
+                Text(
+                    text = "Colin Campbell \nStudent ID: 1402334",
+                    fontSize = 50.sp,
+                    lineHeight = 116.sp,
+                    textAlign = TextAlign.Center,
+
+                )
+                Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center)
+                {
+                    ExplicitButtonExample()
+                    Text(
+                        text = "     ",
+                        lineHeight = 116.sp,
+                        textAlign = TextAlign.Center,
+
+                    )
+                    ImplicitButtonExample()
+
+                }
+                Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center)
+                {
+                    CameraButton()
+                }
 
 
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
-    Column(modifier = modifier.padding(8.dp), verticalArrangement = Arrangement.Center) {
-
-        Text(
-            text = "$name \nStudent ID: 1402334",
-            fontSize = 50.sp,
-            lineHeight = 116.sp,
-            textAlign = TextAlign.Center,
-            modifier = modifier
-        )
-        Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center)
-        {
-            ExplicitButtonExample()
-            Text(
-                text = "     ",
-                lineHeight = 116.sp,
-                textAlign = TextAlign.Center,
-                modifier = modifier
-            )
-            ImplicitButtonExample()
-            CameraButton()
+            }
         }
-
     }
 }
 

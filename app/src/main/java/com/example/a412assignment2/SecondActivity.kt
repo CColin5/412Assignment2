@@ -44,7 +44,7 @@ class SecondActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             _412Assignment2Theme {
-                ScaffoldExample()
+                ScaffoldSecondActivity()
 
             }
         }
@@ -52,7 +52,7 @@ class SecondActivity : ComponentActivity() {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScaffoldExample() {
+fun ScaffoldSecondActivity() {
     var presses by remember { mutableIntStateOf(0) }
     val context = LocalContext.current
     Scaffold(
@@ -90,7 +90,7 @@ fun ScaffoldExample() {
                 )
             }
         },
-        
+
     ) { innerPadding ->
         Column(
             modifier = Modifier
