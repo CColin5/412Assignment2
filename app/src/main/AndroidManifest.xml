@@ -2,7 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <permission android:name="com.example.a412assignment2.MSE412"
+        android:protectionLevel="dangerous" />
 
+    <!-- Use the custom permission -->
+    <uses-permission android:name="com.example.a412assignment2.MSE412" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +31,8 @@
             android:name=".SecondActivity"
             android:exported="true"
             android:label="@string/title_activity_second"
-            android:theme="@style/Theme._412Assignment2">
+            android:theme="@style/Theme._412Assignment2"
+            android:permission="com.example.myapp.MSE412">
             <intent-filter>
                 <action android:name="com.example.ACTION_OPEN_SECOND_ACTIVITY" />
 

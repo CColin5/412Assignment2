@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,14 +43,31 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 
 
+
 class MainActivity : ComponentActivity() {
+
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Register the permission request launcher
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                // Permission granted, handle action
+                val intent = Intent("com.example.ACTION_OPEN_SECOND_ACTIVITY")
+                startActivity(intent)
+            } else {
+                // Permission denied, handle accordingly (e.g., show a message)
+            }
+        }
+
+
         //setContentView(R.layout.activity_main)
         enableEdgeToEdge()
         setContent {
             _412Assignment2Theme {
-                ScaffoldMainActivity()
+                ScaffoldMainActivity(requestPermissionLauncher)
             }
         }
     }
@@ -56,7 +75,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScaffoldMainActivity() {
+fun ScaffoldMainActivity(requestPermissionLauncher: ActivityResultLauncher<String>) {
     var presses by remember { mutableIntStateOf(0) }
     val context = LocalContext.current
     Scaffold(
@@ -117,14 +136,14 @@ fun ScaffoldMainActivity() {
                 )
                 Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center)
                 {
-                    ExplicitButtonExample()
+                    ExplicitButtonExample(requestPermissionLauncher)
                     Text(
                         text = "     ",
                         lineHeight = 116.sp,
                         textAlign = TextAlign.Center,
 
                     )
-                    ImplicitButtonExample()
+                    ImplicitButtonExample(requestPermissionLauncher)
 
                 }
                 Row( modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center)
@@ -143,14 +162,18 @@ fun ScaffoldMainActivity() {
 
 
 @Composable
-fun ImplicitButtonExample(modifier: Modifier = Modifier) {
+fun ImplicitButtonExample(requestPermissionLauncher: ActivityResultLauncher<String>, modifier: Modifier = Modifier) {
+
     val context = LocalContext.current
     Column (
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(onClick =  {val intent = Intent("com.example.ACTION_OPEN_SECOND_ACTIVITY")
-            context.startActivity(intent)}) {
+
+        Button(onClick =  {
+            requestPermissionLauncher.launch("com.example.a412assignment2.MSE412")
+
+            }) {
             Text("Implicit Button")
 
         }
@@ -158,15 +181,14 @@ fun ImplicitButtonExample(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun ExplicitButtonExample(modifier: Modifier = Modifier) {
+fun ExplicitButtonExample(requestPermissionLauncher: ActivityResultLauncher<String>, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     Column (
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(onClick =  {
-            val intent = Intent(context, SecondActivity::class.java)
-            context.startActivity(intent)
+            requestPermissionLauncher.launch("com.example.a412assignment2.MSE412")
 
         }) {
             Text("Explicit Button")
